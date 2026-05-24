@@ -1,0 +1,13 @@
+root = true
+
+[*.keymap]
+indent_style = tab
+tab_width = 8
+
+[*.overlay]
+indent_style = tab
+tab_width = 8
+
+[*.dtsi]
+indent_style = tab
+tab_width = 8
