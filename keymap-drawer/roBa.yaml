@@ -36,12 +36,12 @@ layers:
   - .
   - BSPC
   - LALT
-  - LGUI
+  - {t: LANG2, h: LGUI}
   - '&caps_word'
   - LCTRL
   - FUNCTION
   - LSHFT
-  - RGUI
+  - {t: LANG1, h: RGUI}
   - {t: SPACE, h: NUM}
   - {t: ESC, h: SCROLL}
   FUNCTION:
