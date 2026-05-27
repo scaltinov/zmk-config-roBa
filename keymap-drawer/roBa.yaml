@@ -23,7 +23,7 @@ layers:
   - K
   - L
   - RET
-  - {t: Z, h: LSHFT}
+  - Z
   - X
   - C
   - V
@@ -36,8 +36,8 @@ layers:
   - .
   - BSPC
   - LALT
-  - {t: LANG2, h: LGUI}
   - '&caps_word'
+  - {t: LANG2, h: LGUI}
   - LCTRL
   - FUNCTION
   - LSHFT
