@@ -19,6 +19,28 @@ Personal ZMK firmware config for the **roBa** split keyboard.
 - **Keymap visualization** — `.github/workflows/draw.yml` runs `caksoylar/keymap-drawer` automatically whenever `config/roBa.keymap` (or `config/roBa.dtsi`) changes, regenerating `keymap-drawer/roBa.svg` and committing it back. Do not edit the SVG by hand; do not run keymap-drawer locally.
 - **No local toolchain is set up in this repo.** Default workflow is: edit → push → download CI artifact → flash. Use ZMK Studio (`CONFIG_ZMK_STUDIO=y` on `roBa_R`) for live keymap tweaks without rebuilding.
 
+### Local flash recipe (push → download → cp)
+
+End-to-end flash from a local shell once a commit is pushed:
+
+```bash
+# 1. Find the latest successful build.yml run on the fork (not upstream)
+gh run list --repo scaltinov/zmk-config-roBa --workflow build.yml --limit 5
+
+# 2. Download artifacts for a specific run id into a local dir
+gh run download <run-id> --repo scaltinov/zmk-config-roBa --dir ~/Downloads/roBa-uf2
+
+# 3. Double-tap reset on the target XIAO so /Volumes/XIAO-SENSE/ mounts,
+#    then copy the matching .uf2 (right side example):
+cp ~/Downloads/roBa-uf2/firmware/roBa_R-seeeduino_xiao_ble-zmk.uf2 /Volumes/XIAO-SENSE/
+```
+
+Notes:
+- `gh` defaults to the upstream repo (`kumamuk-git/zmk-config-roBa`) — always pass `--repo scaltinov/zmk-config-roBa` explicitly, or `cd` into the repo and let `gh` infer from `origin`.
+- `cp` may print `could not copy extended attributes ... Device not configured`. This is harmless: the XIAO reboots the instant it has the `.uf2`, so the FAT mount disappears before macOS finishes writing xattrs. If `XIAO-SENSE` auto-unmounts, the flash succeeded.
+- Artifacts are not committed to the repo — there is no local `firmware/` directory after `git pull`. You must `gh run download` (or grab the zip from the Actions UI).
+- Flash only the side(s) you changed. Right-only changes (keymap on `roBa_R`) do not require reflashing `roBa_L`.
+
 ## Architecture
 
 Two-tier config split:
